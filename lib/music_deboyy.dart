@@ -37,31 +37,26 @@ class _musicdeboyyState extends State<musicdeboyy> {
   void initState() {
     super.initState();
 
-    // Listener for position updates
     _audioPlayer.positionStream.listen((position) {
       setState(() {
         currentPosition = position;
       });
     });
 
-    // Listener for song duration updates
     _audioPlayer.durationStream.listen((duration) {
       setState(() {
         songDuration = duration ?? Duration.zero;
       });
     });
-
-    // Listener for player state (is playing or paused)
+    
     _audioPlayer.playerStateStream.listen((state) {
       setState(() {
         isPlaying = state.playing;
       });
     });
 
-    // Listener for when the song completes (to automatically play next song)
     _audioPlayer.playerStateStream.listen((state) {
       if (state.processingState == ProcessingState.completed) {
-        // Automatically play the next song if available
         if (currentIndex + 1 < filteredSongList.length) {
           playSong(currentIndex + 1);
         }
